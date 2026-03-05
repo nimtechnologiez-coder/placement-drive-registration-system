@@ -32,35 +32,57 @@ function renderTable(data) {
     tbody.innerHTML = '';
 
     if (data.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-4">No records found.</td></tr>';
+        tbody.innerHTML = '<tr><td colspan="8" class="text-center py-5 text-muted">No candidate records found matching your criteria.</td></tr>';
         return;
     }
 
     data.forEach(reg => {
         const row = `
             <tr>
-                <td><span class="badge bg-light text-dark border">${reg.registration_id}</span></td>
+                <td><span class="badge bg-light text-dark border px-2 py-1">${reg.registration_id}</span></td>
                 <td>
                     <div class="fw-bold">${reg.full_name}</div>
-                    <small class="text-muted">${reg.email}</small>
+                    <div class="small text-muted" style="font-size: 0.8rem;">${reg.email}</div>
                 </td>
-                <td><span class="badge badge-dept">${reg.department}</span></td>
-                <td>${reg.current_cgpa}</td>
-                <td>${reg.yop}</td>
-                <td>${reg.mobile}</td>
+                <td><span class="badge-dept">${reg.department}</span></td>
                 <td>
-                    <a href="${reg.resume_path.startsWith('http') ? reg.resume_path : '/' + reg.resume_path.replace(/\\/g, '/')}" target="_blank" class="btn btn-sm btn-outline-info">
-                        <i class="bi bi-file-earmark-pdf"></i> View
+                    <div class="d-flex align-items-center">
+                        <span class="fw-bold me-2">${reg.current_cgpa}</span>
+                        <div class="progress w-100" style="height: 4px; background: #e2e8f0;">
+                            <div class="progress-bar" role="progressbar" style="width: ${reg.current_cgpa * 10}%; background: var(--primary-gradient);"></div>
+                        </div>
+                    </div>
+                </td>
+                <td><span class="text-dark fw-medium">${reg.yop}</span></td>
+                <td>
+                    <div class="small">${reg.mobile}</div>
+                </td>
+                <td>
+                    <a href="${reg.resume_path.startsWith('http') ? reg.resume_path : '/' + reg.resume_path.replace(/\\/g, '/')}" target="_blank" class="btn btn-sm btn-light border-0 shadow-sm px-3">
+                        <i class="bi bi-file-earmark-pdf text-danger me-1"></i> Resume
                     </a>
                 </td>
-                <td>${new Date(reg.created_at).toLocaleDateString()}</td>
+                <td>
+                    <button class="btn btn-sm btn-link text-primary p-0 text-decoration-none fw-bold" onclick="alert('Student ID: ${reg.registration_id}')">
+                        DETAILS
+                    </button>
+                </td>
             </tr>
         `;
         tbody.insertAdjacentHTML('beforeend', row);
     });
 }
 
-document.getElementById('exportBtn').addEventListener('click', () => {
+function resetFilters() {
+    document.getElementById('searchInput').value = '';
+    document.getElementById('filterDept').value = '';
+    document.getElementById('filterYop').value = '';
+    document.getElementById('filterCgpa').value = '';
+    loadData();
+}
+
+document.getElementById('exportBtn').addEventListener('click', (e) => {
+    e.preventDefault();
     const filters = {
         department: document.getElementById('filterDept').value,
         yop: document.getElementById('filterYop').value,
