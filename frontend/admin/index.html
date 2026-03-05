@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard – Placement Registry</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .sidebar {
+            min-height: 100vh;
+            background: #212529;
+            color: white;
+            padding: 20px;
+        }
+
+        .main-content {
+            padding: 30px;
+        }
+
+        .stats-card {
+            border: none;
+            border-radius: 12px;
+            transition: transform 0.2s;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5);
+        }
+
+        .table-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .badge-dept {
+            background: #e7f1ff;
+            color: #0d6efd;
+            font-weight: 600;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div class="col-md-2 sidebar d-none d-md-block">
+                <h4 class="mb-4 text-primary">Placement Portal</h4>
+                <nav class="nav flex-column">
+                    <a class="nav-link text-white active" href="#"><i class="bi bi-grid-1x2-fill me-2"></i>
+                        Dashboard</a>
+                    <a class="nav-link text-white" href="#"><i class="bi bi-people-fill me-2"></i> Candidates</a>
+                    <a class="nav-link text-white" href="#" id="exportBtn"><i
+                            class="bi bi-file-earmark-excel-fill me-2"></i> Export Excel</a>
+                </nav>
+            </div>
+
+            <!-- Main Content -->
+            <div class="col-md-10 main-content">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h2>Student Registrations</h2>
+                    <div class="d-flex gap-2">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search name or ID...">
+                        <button class="btn btn-outline-primary" onclick="loadData()"><i
+                                class="bi bi-search"></i></button>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="card mb-4 border-0 p-3 shadow-sm">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <select id="filterDept" class="form-select" onchange="loadData()">
+                                <option value="">All Departments</option>
+                                <option value="Computer Science">Computer Science</option>
+                                <option value="Information Technology">Information Technology</option>
+                                <option value="Mechanical Engineering">Mechanical Engineering</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <select id="filterYop" class="form-select" onchange="loadData()">
+                                <option value="">Year of Passing</option>
+                                <option value="2023">2023</option>
+                                <option value="2024">2024</option>
+                                <option value="2025">2025</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2">
+                            <input type="number" id="filterCgpa" class="form-control" placeholder="Min CGPA" step="0.1"
+                                onchange="loadData()">
+                        </div>
+                        <div class="col-md-5 text-end">
+                            <span class="text-muted me-3">Total Registered: <strong id="totalCount">0</strong></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Table -->
+                <div class="card table-card">
+                    <div class="table-responsive">
+                        <table class="table table-hover align-middle mb-0">
+                            <thead class="bg-light">
+                                <tr>
+                                    <th>Student ID</th>
+                                    <th>Name</th>
+                                    <th>Department</th>
+                                    <th>CGPA</th>
+                                    <th>YOP</th>
+                                    <th>Mobile</th>
+                                    <th>Resume</th>
+                                    <th>Date Applied</th>
+                                </tr>
+                            </thead>
+                            <tbody id="registryTable">
+                                <!-- Data will be loaded via JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+
+</html>
