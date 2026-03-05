@@ -40,18 +40,26 @@ npm start
 - **Registration Form**: `http://localhost:5000`
 - **Admin Dashboard**: `http://localhost:5000/admin`
 
-## Deployment to Render
+## Deployment to Supabase
 
-This project is configured for easy deployment via **Render Blueprints**.
+This project supports **Supabase** for both the PostgreSQL database and cloud storage for resumes.
 
-1.  **Push to GitHub**: Push your code to a GitHub repository.
-2.  **Render Dashboard**: Go to [Render Dashboard](https://dashboard.render.com).
-3.  **Blueprints**: Click "New" -> "Blueprint".
-4.  **Connect Repo**: Select your GitHub repository.
-5.  **Configure**: Render will automatically detect `render.yaml`.
-6.  **Environment Variables**:
-    - `EMAIL_USER`: Your Gmail address.
-    - `EMAIL_PASS`: Your Gmail App Password.
-    - `ADMIN_PASSWORD`: A secure password for the admin dashboard.
+### 1. Database Setup
+1. Create a new project on [Supabase](https://supabase.com).
+2. Go to the **SQL Editor** and run the contents of [schema.sql](file:///d:/Nim%20Tech%20Web/placement-registration/schema.sql).
+3. Copy the **Connection String** (Transaction mode recommended) from Project Settings -> Database.
 
-The database and persistent storage for resumes will be automatically created.
+### 2. Storage Setup
+1. Go to **Storage** and create a new bucket named `resumes`.
+2. Set the bucket to **Public** (optional, for direct resume viewing via link) or configure appropriate policies.
+
+### 3. Environment Variables
+Update your `.env` or deployment dashboard (Render/Vercel) with:
+- `DATABASE_URL`: Your Supabase PostgreSQL connection string.
+- `SUPABASE_URL`: Your Supabase Project URL.
+- `SUPABASE_ANON_KEY`: Your Supabase API Key (Anon).
+- `EMAIL_USER`: Your Gmail address.
+- `EMAIL_PASS`: Your Gmail App Password.
+- `ADMIN_PASSWORD`: Secure password for the admin dashboard.
+
+The application will automatically use Supabase Storage for resume uploads if these variables are provided.

@@ -1,5 +1,6 @@
 const Registration = require('../models/registration');
 const { sendConfirmationEmail } = require('../config/email');
+const supabase = require('../config/supabase');
 const XLSX = require('xlsx');
 const path = require('path');
 
@@ -9,9 +10,30 @@ exports.registerStudent = async (req, res) => {
             return res.status(400).json({ success: false, message: 'Resume is mandatory' });
         }
 
+        const file = req.file;
+        const fileName = `${Date.now()}_${file.originalname.replace(/\s+/g, '_')}`;
+
+        // Upload to Supabase Storage
+        const { data: uploadData, error: uploadError } = await supabase.storage
+            .from('resumes')
+            .upload(fileName, file.buffer, {
+                contentType: file.mimetype,
+                upsert: false
+            });
+
+        if (uploadError) {
+            console.error('Supabase Upload Error:', uploadError);
+            return res.status(500).json({ success: false, message: 'Failed to upload resume to cloud storage' });
+        }
+
+        // Get Public URL
+        const { data: { publicUrl } } = supabase.storage
+            .from('resumes')
+            .getPublicUrl(fileName);
+
         const data = {
             ...req.body,
-            resume_path: req.file.path,
+            resume_path: publicUrl,
             internship_details: req.body.internship_details ? JSON.parse(req.body.internship_details) : null,
             willing_to_relocate: req.body.willing_to_relocate === 'true' || req.body.willing_to_relocate === true,
             current_arrears: req.body.current_arrears === 'true' || req.body.current_arrears === true,
@@ -79,6 +101,7 @@ exports.exportToExcel = async (req, res) => {
             'Tools Known': reg.tools_technologies,
             'Certifications': reg.certifications,
             'Skill Level': reg.skill_level,
+            'Resume Link': reg.resume_path,
             'Created At': reg.created_at
         }));
 

@@ -45,7 +45,7 @@ function renderTable(data) {
                 <td>${reg.yop}</td>
                 <td>${reg.mobile}</td>
                 <td>
-                    <a href="/${reg.resume_path.replace(/\\/g, '/')}" target="_blank" class="btn btn-sm btn-outline-info">
+                    <a href="${reg.resume_path.startsWith('http') ? reg.resume_path : '/' + reg.resume_path.replace(/\\/g, '/')}" target="_blank" class="btn btn-sm btn-outline-info">
                         <i class="bi bi-file-earmark-pdf"></i> View
                     </a>
                 </td>
