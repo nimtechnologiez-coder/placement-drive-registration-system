@@ -22,8 +22,12 @@ exports.registerStudent = async (req, res) => {
             });
 
         if (uploadError) {
-            console.error('Supabase Upload Error:', uploadError);
-            return res.status(500).json({ success: false, message: 'Failed to upload resume to cloud storage' });
+            console.error('Supabase Upload Error:', uploadError.message, uploadError);
+            return res.status(500).json({
+                success: false,
+                message: 'Failed to upload resume to cloud storage',
+                debug: uploadError.message
+            });
         }
 
         // Get Public URL

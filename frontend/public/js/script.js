@@ -193,7 +193,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     item.querySelector('.step-icon').innerHTML = '<i class="bi bi-check-lg"></i>';
                 });
             } else {
-                alert('Error: ' + result.message);
+                const errorMsg = result.debug ? `${result.message} (${result.debug})` : result.message;
+                alert('Error: ' + errorMsg);
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = 'Submit Application';
             }
