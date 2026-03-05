@@ -1,26 +1,30 @@
+let debounceTimer;
 async function loadData() {
-    const filters = {
-        department: document.getElementById('filterDept').value,
-        yop: document.getElementById('filterYop').value,
-        cgpa: document.getElementById('filterCgpa').value,
-        search: document.getElementById('searchInput').value
-    };
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(async () => {
+        const filters = {
+            department: document.getElementById('filterDept').value,
+            yop: document.getElementById('filterYop').value,
+            cgpa: document.getElementById('filterCgpa').value,
+            search: document.getElementById('searchInput').value
+        };
 
-    const queryParams = new URLSearchParams(Object.fromEntries(
-        Object.entries(filters).filter(([_, v]) => v)
-    )).toString();
+        const queryParams = new URLSearchParams(Object.fromEntries(
+            Object.entries(filters).filter(([_, v]) => v)
+        )).toString();
 
-    try {
-        const response = await fetch(`/api/registrations/all?${queryParams}`);
-        const result = await response.json();
+        try {
+            const response = await fetch(`/api/registrations/all?${queryParams}`);
+            const result = await response.json();
 
-        if (result.success) {
-            renderTable(result.data);
-            document.getElementById('totalCount').textContent = result.data.length;
+            if (result.success) {
+                renderTable(result.data);
+                document.getElementById('totalCount').textContent = result.data.length;
+            }
+        } catch (error) {
+            console.error('Failed to load registrations:', error);
         }
-    } catch (error) {
-        console.error('Failed to load registrations:', error);
-    }
+    }, 300); // 300ms debounce
 }
 
 function renderTable(data) {

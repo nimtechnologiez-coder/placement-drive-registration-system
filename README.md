@@ -51,7 +51,10 @@ This project supports **Supabase** for both the PostgreSQL database and cloud st
 
 ### 2. Storage Setup
 1. Go to **Storage** and create a new bucket named `resumes`.
-2. Set the bucket to **Public** (optional, for direct resume viewing via link) or configure appropriate policies.
+2. Set the bucket to **Public** (optional, for direct resume viewing via link).
+3. **Important**: Add **RLS Policies** to allow uploads. In the Supabase Dashboard, go to Storage -> `resumes` bucket -> Policies:
+   - Create a policy for **INSERT** (choose `anon` role or provide `true` for all).
+   - Create a policy for **SELECT** to allow viewing.
 
 ### 3. Environment Variables
 Update your `.env` or deployment dashboard (Render/Vercel) with:

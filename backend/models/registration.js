@@ -59,7 +59,7 @@ class Registration {
 
         if (filters.department) {
             values.push(filters.department);
-            filterClauses.push(`department = $${values.length}`);
+            filterClauses.push(`department ILIKE $${values.length}`);
         }
         if (filters.cgpa) {
             values.push(filters.cgpa);

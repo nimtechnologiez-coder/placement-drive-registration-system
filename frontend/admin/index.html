@@ -69,7 +69,8 @@
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Student Registrations</h2>
                     <div class="d-flex gap-2">
-                        <input type="text" id="searchInput" class="form-control" placeholder="Search name or ID...">
+                        <input type="text" id="searchInput" class="form-control" placeholder="Search name or ID..."
+                            oninput="loadData()">
                         <button class="btn btn-outline-primary" onclick="loadData()"><i
                                 class="bi bi-search"></i></button>
                     </div>
@@ -84,19 +85,24 @@
                                 <option value="Computer Science">Computer Science</option>
                                 <option value="Information Technology">Information Technology</option>
                                 <option value="Mechanical Engineering">Mechanical Engineering</option>
+                                <option value="Civil Engineering">Civil Engineering</option>
+                                <option value="Electronics and Communication">Electronics and Communication</option>
+                                <option value="Other">Other</option>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <select id="filterYop" class="form-select" onchange="loadData()">
                                 <option value="">Year of Passing</option>
+                                <option value="2022">2022</option>
                                 <option value="2023">2023</option>
                                 <option value="2024">2024</option>
                                 <option value="2025">2025</option>
+                                <option value="2026">2026</option>
                             </select>
                         </div>
                         <div class="col-md-2">
                             <input type="number" id="filterCgpa" class="form-control" placeholder="Min CGPA" step="0.1"
-                                onchange="loadData()">
+                                oninput="loadData()">
                         </div>
                         <div class="col-md-5 text-end">
                             <span class="text-muted me-3">Total Registered: <strong id="totalCount">0</strong></span>
